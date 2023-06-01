@@ -5,3 +5,4 @@
 
 const String menuIcon = 'assets/images/png/menu_icon.png';
 const String themeIcon = 'assets/images/png/mode_icon.png';
+const String backIcon = 'assets/images/png/back_icon.png';

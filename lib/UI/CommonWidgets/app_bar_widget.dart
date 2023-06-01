@@ -8,7 +8,8 @@ import '../../Utils/image_constants.dart';
  * Created on 30/05/23 at 5:00 pm
  */
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  final bool isDetailScreen;
+  const CustomAppBar({Key? key, required this.isDetailScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,10 @@ class CustomAppBar extends StatelessWidget {
           ),
           Row(
             children: [
+              isDetailScreen == true ?
+              IconButton(onPressed: () {
+                Navigator.pop(context);
+              }, icon: Image.asset(backIcon)) :
               IconButton(onPressed: () {}, icon: Image.asset(menuIcon)),
               Expanded(
                 child: CustomSearchTextField(
@@ -38,4 +43,5 @@ class CustomAppBar extends StatelessWidget {
       ),
     );
   }
+
 }

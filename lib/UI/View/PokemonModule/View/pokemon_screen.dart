@@ -9,9 +9,11 @@ import '../../../CommonWidgets/search_text_field_widget.dart';
 import '../ViewModel/pokemon_view_model.dart';
 
 */
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pokedex/UI/View/PokemonModule/View/pokemon_detail_screen.dart';
 
 import '../../../CommonWidgets/app_bar_widget.dart';
 import '../ViewModel/pokemon_view_model.dart';
@@ -153,60 +155,123 @@ class PokemonScreen extends StatelessWidget {
         child: Scaffold(
           body: Column(
             children: [
-              CustomAppBar(),
-              SizedBox(height: 50,),
+               CustomAppBar(isDetailScreen: false,),
+              const SizedBox(
+                height: 10,
+              ),
               pokemonViewModel.isLoading.value == true
                   ? Center(
                       child: Image.asset(
-                          'assets/images/gif/pokemon_loader.gif'),
+                        'assets/images/gif/pikachu_loader.gif',
+                        height: 100,
+                        width: 100,
+                      ),
                     )
                   : Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(left: 10, right: 10),
                         child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            itemCount: pokemonViewModel.pokemonList.length,
-                            itemBuilder: (context, index) {
-                              return Stack(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisSpacing: 20,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PokemonDetailScreen(
+                                              pokemonImage:
+                                                  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${index + 1}.png',
+                                            )));
+                              },
+                              child: Stack(
                                 children: [
-                                  Positioned(
-                                    top: 50,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 50.0),
                                     child: Card(
                                       elevation: 4.0,
                                       shape: const RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(20)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.yellow,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(20),
-                                                    topRight: Radius.circular(20))),
-                                            height: 100,
-                                            width: 170,
+                                      child: Container(
+                                        height: 150,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.yellow,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
                                           ),
-                                          Text('Hello')
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              width: 500,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  // topLeft: Radius.circular(10),
+                                                  // topRight: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(50),
+                                                  bottomRight:
+                                                      Radius.circular(50),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                pokemonViewModel
+                                                    .pokemonList[index].name
+                                                    .toString(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
                                   ),
                                   Positioned(
-                                    top: -10,
-                                    right: 30,
-                                    left: 20,
-                                    child: Image.network(
-                                      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${index + 20}.png',width: 150,
-                                      height: 130,),
+                                    top: MediaQuery.of(context).size.width *
+                                        -0.01,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.02,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.01,
+                                    bottom: MediaQuery.of(context).size.width *
+                                        0.10,
+                                    child: CachedNetworkImage(
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      },
+                                      imageUrl:
+                                          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${index + 1}.png',
+                                      width: 150,
+                                    ),
                                   ),
                                 ],
-                              );
-                            }),
+                              ),
+                            );
+                          },
+                          itemCount: pokemonViewModel.pokemonList.length,
+                        ),
                       ),
                     ),
             ],

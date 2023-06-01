@@ -38,6 +38,9 @@ dependencies:
   assets_audio_player: ^3.0.6
   get: ^4.6.5
   dio: ^5.1.2
+  cached_network_image: ^3.2.3
+  palette_generator: ^0.3.3+2
+  flutter_flip_card: ^0.0.4
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +65,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/png/
+    - assets/images/png/back_icon.png
     - assets/audio/mp3/
     - assets/images/gif/
 

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../Data/Remote/Response/pokemonData_list_model.dart';
 import '../../Data/Remote/Response/pokemonList_model_response.dart';
 import '../APIs/api_constants.dart';
 import '../NetworkHandler/dio_with_interceptor.dart';
@@ -24,4 +25,18 @@ class PokemonRepository{
       return PokemonListResponseModel.withError('No Internet Connection');
     }
   }
+   Future<PokemonDataResponseModel> fetchDataPokemon() async{
+     try {
+       client = await customDio.getDio();
+       var response = await client.get(pokemonDataUrl);
+       return PokemonDataResponseModel.fromJson(response.data);
+     } catch (error, stacktrace) {
+       if (kDebugMode) {
+         print("Exception occurred: $error stackTrace: $stacktrace");
+       }
+       return PokemonDataResponseModel.withError('No Internet Connection');
+     }
+   }
+
+
 }
